@@ -1,0 +1,23 @@
+{
+  "name": "linkedin-scraper",
+  "version": "1.0.0",
+  "description": "LinkedIn Company & Profile Data Scraper",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "scrape:company": "node src/index.js --company",
+    "scrape:profile": "node src/index.js --profile"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.44.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
