@@ -149,3 +149,245 @@ is sufficient. To scale to 10,000 profiles/day:
 A queue-based architecture (job producer → Redis queue → N consumer workers,
 each with their own browser context and account cookie) can sustain 10K+ daily
 with ~10 worker nodes.
+
+---
+
+## 7. Future Enhancements & TODO
+
+### 7.1 Queue-Based Async Processing with BullMQ
+
+**Motivation:** Current implementation is synchronous — API requests block until
+scraping completes (12-60s per profile). For bulk operations (100s-1000s of URLs),
+this becomes a bottleneck.
+
+**Proposed Architecture:**
+
+```
+┌─────────────┐      ┌──────────────┐      ┌─────────────────┐
+│   Client    │─────▶│  REST API    │─────▶│  BullMQ Queue   │
+│             │      │   (Express)  │      │   (Redis)       │
+└─────────────┘      └──────────────┘      └─────────────────┘
+                            │                       │
+                            │                       ▼
+                            │              ┌─────────────────┐
+                            │              │  Worker Pool    │
+                            │              │  (Scraper Jobs) │
+                            │              └─────────────────┘
+                            │                       │
+                            ▼                       ▼
+                     ┌──────────────────────────────────┐
+                     │      Webhook Callback            │
+                     │  POST {url, status, data}        │
+                     └──────────────────────────────────┘
+```
+
+**Implementation Steps:**
+
+1. **Install BullMQ:**
+
+   ```bash
+   npm install bullmq ioredis
+   ```
+
+2. **Create Queue Producer** (`src/queue/producer.js`):
+
+   ```javascript
+   import { Queue } from "bullmq";
+
+   const scrapeQueue = new Queue("linkedin-scrape", {
+     connection: { host: "localhost", port: 6379 },
+   });
+
+   export async function enqueueJob(type, url, options = {}) {
+     return scrapeQueue.add(
+       `scrape-${type}`,
+       {
+         type, // 'profile' | 'company'
+         url,
+         options, // { limit, domain, webhookUrl }
+         jobId: generateJobId(),
+       },
+       {
+         attempts: 3,
+         backoff: { type: "exponential", delay: 30000 },
+       },
+     );
+   }
+   ```
+
+3. **Create Worker** (`src/queue/worker.js`):
+
+   ```javascript
+   import { Worker } from "bullmq";
+   import { scrapeProfile } from "../scrapers/profileScraper.js";
+   import { runCompanyScrape } from "../commands/scrapeCompany.js";
+
+   const worker = new Worker(
+     "linkedin-scrape",
+     async (job) => {
+       const { type, url, options } = job.data;
+
+       try {
+         const result =
+           type === "profile"
+             ? await scrapeProfile(url)
+             : await runCompanyScrape(url, options);
+
+         // Send webhook callback if provided
+         if (options.webhookUrl) {
+           await sendWebhook(options.webhookUrl, {
+             jobId: job.data.jobId,
+             status: "completed",
+             data: result,
+           });
+         }
+
+         return result;
+       } catch (error) {
+         if (options.webhookUrl) {
+           await sendWebhook(options.webhookUrl, {
+             jobId: job.data.jobId,
+             status: "failed",
+             error: error.message,
+           });
+         }
+         throw error;
+       }
+     },
+     {
+       connection: { host: "localhost", port: 6379 },
+       concurrency: 5, // 5 parallel browser contexts
+       limiter: { max: 10, duration: 60000 }, // Rate limit: 10 jobs/min
+     },
+   );
+   ```
+
+4. **Add Queue Endpoints to API** (`src/server.js`):
+
+   ```javascript
+   // POST /api/scrape/async - Queue a scrape job
+   app.post("/api/scrape/async", async (req, res) => {
+     const { type, url, options } = req.body;
+     const job = await enqueueJob(type, url, options);
+
+     res.json({
+       success: true,
+       jobId: job.id,
+       status: "queued",
+       checkUrl: `/api/jobs/${job.id}`,
+       message: "Job queued successfully",
+     });
+   });
+
+   // GET /api/jobs/:jobId - Check job status
+   app.get("/api/jobs/:jobId", async (req, res) => {
+     const job = await scrapeQueue.getJob(req.params.jobId);
+     const state = await job.getState();
+
+     res.json({
+       jobId: job.id,
+       status: state,
+       progress: job.progress,
+       data: state === "completed" ? job.returnvalue : null,
+       error: state === "failed" ? job.failedReason : null,
+     });
+   });
+
+   // POST /api/scrape/bulk - Bulk enqueue with webhook
+   app.post("/api/scrape/bulk", async (req, res) => {
+     const { urls, type, webhookUrl, options } = req.body;
+
+     const jobs = await Promise.all(
+       urls.map((url) =>
+         enqueueJob(type, url, {
+           ...options,
+           webhookUrl,
+         }),
+       ),
+     );
+
+     res.json({
+       success: true,
+       totalQueued: jobs.length,
+       jobIds: jobs.map((j) => j.id),
+       webhookUrl,
+     });
+   });
+   ```
+
+### 7.2 Webhook Integration for Async Notifications
+
+**Purpose:** Instead of polling `/api/jobs/:jobId`, clients can provide a webhook
+URL that receives automatic callbacks when scraping completes.
+
+**Implementation:**
+
+```javascript
+// src/utils/webhook.js
+import axios from "axios";
+
+export async function sendWebhook(webhookUrl, payload) {
+  try {
+    await axios.post(
+      webhookUrl,
+      {
+        timestamp: new Date().toISOString(),
+        ...payload,
+      },
+      {
+        timeout: 10000,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  } catch (error) {
+    console.error(`[webhook] Failed to send to ${webhookUrl}:`, error.message);
+    // Store failed webhooks in dead letter queue for retry
+  }
+}
+```
+
+**Webhook Payload Schema:**
+
+```json
+{
+  "timestamp": "2026-03-25T10:30:00.000Z",
+  "jobId": "job_abc123",
+  "status": "completed",
+  "type": "profile",
+  "url": "https://linkedin.com/in/example",
+  "data": {
+    "name": "Jane Doe",
+    "headline": "Software Engineer @ GitHub",
+    ...
+  },
+  "error": null,
+  "duration": 12500
+}
+```
+
+### 7.3 Additional Improvements
+
+**Cookie Pool Management:**
+
+- Database table tracking cookies: `{ cookie, accountEmail, createdAt, lastUsed, dailyQuota }`
+- Health check endpoint: validate cookies daily, rotate expired ones
+- Round-robin assignment: each job gets least-recently-used cookie
+
+**Distributed Worker Deployment:**
+
+- Docker containers for workers
+- Kubernetes HorizontalPodAutoscaler based on queue depth
+- Each pod runs 5 browser contexts (1 CPU core each)
+
+**Monitoring & Observability:**
+
+- BullMQ UI dashboard (`npm install @bull-board/express`)
+- Prometheus metrics: job success rate, queue depth, scrape duration
+- Sentry error tracking for failed jobs
+
+**Data Persistence:**
+
+- Store scraped results in PostgreSQL/MongoDB
+- Enable `/api/cache/profile/:username` endpoint for instant retrieval
+
+---

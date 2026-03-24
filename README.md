@@ -1,6 +1,6 @@
 # LinkedIn Company & Profile Data Scraper
 
-A Node.js CLI tool that extracts employee and profile data from LinkedIn, outputting clean JSON (and optionally CSV).
+A Node.js tool that extracts employee and profile data from LinkedIn, outputting clean JSON (and optionally CSV). Available as both **CLI** and **REST API**.
 
 ## Stack
 
@@ -94,6 +94,82 @@ DEBUG=1 npm start -- --company https://www.linkedin.com/company/github/
 
 ---
 
+## 🌐 REST API Mode
+
+You can also run this tool as a **REST API server** for HTTP-based scraping.
+
+### Start the API Server
+
+```bash
+# Production mode
+npm run server
+
+# Development mode (auto-restart on file changes)
+npm run dev
+```
+
+Server will start on `http://localhost:3000` (configurable via `PORT` environment variable).
+
+### API Endpoints
+
+#### 1. Health Check
+
+```bash
+curl http://localhost:3000/health
+```
+
+#### 2. Scrape Company Employees
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/company \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://www.linkedin.com/company/github/",
+    "limit": 20,
+    "domain": "github.com"
+  }'
+```
+
+#### 3. Scrape Profile
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/profile \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://www.linkedin.com/in/williamhgates/"
+  }'
+```
+
+#### 4. Batch Scraping
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "urls": [
+      "https://www.linkedin.com/in/williamhgates/",
+      "https://www.linkedin.com/in/satyanadella/"
+    ],
+    "type": "profile"
+  }'
+```
+
+### Test the API
+
+Run the automated test suite:
+
+```bash
+./test-api.sh
+```
+
+### 📘 Full API Documentation
+
+For complete API documentation including all endpoints, parameters, error handling, integration examples, and deployment guides, see:
+
+**[API.md](./API.md)** - Comprehensive REST API reference
+
+---
+
 ## Output
 
 Results are written to the `data/` directory by default.
@@ -161,6 +237,7 @@ Results are written to the `data/` directory by default.
 linkedin-scraper/
 ├── src/
 │   ├── index.js                  # CLI entrypoint (commander.js)
+│   ├── server.js                 # REST API server (express.js) ✨ NEW
 │   ├── commands/
 │   │   ├── scrapeCompany.js      # Orchestrates company scrape + output
 │   │   └── scrapeProfile.js      # Orchestrates profile scrape + output
@@ -172,7 +249,8 @@ linkedin-scraper/
 │   │   ├── delay.js              # Jittered random delay helper
 │   │   ├── retry.js              # Exponential backoff wrapper
 │   │   ├── cookies.js            # Cookie loading from .env
-│   │   └── normalize.js          # Text normalization, seniority inference, email pattern
+│   │   ├── normalize.js          # Text normalization, seniority inference, email pattern
+│   │   └── validation.js         # LinkedIn URL validation ✨ NEW
 │   └── output/
 │       ├── jsonWriter.js         # JSON file writer
 │       └── csvWriter.js          # CSV file writer (bonus)
@@ -183,6 +261,8 @@ linkedin-scraper/
 ├── data/                         # Output files (gitignored)
 │   ├── sample-company.json       # Sample company output
 │   └── sample-profile.json       # Sample profile output
+├── API.md                        # REST API documentation ✨ NEW
+├── test-api.sh                   # API test script ✨ NEW
 ├── .env.example
 ├── .gitignore
 └── package.json

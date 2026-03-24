@@ -46,7 +46,7 @@ export async function scrapeProfile(profileUrl) {
 
     // Wait for the feed/home page to show something meaningful
     await page.waitForSelector("body", { timeout: 20000 }).catch(() => {});
-    await delay(2000, 3000);
+    await delay(800, 1200);
 
     // Check we are actually logged in (not on the login/authwall page)
     const currentUrl = page.url();
@@ -68,18 +68,17 @@ export async function scrapeProfile(profileUrl) {
     await page.goto(profileUrl, { waitUntil: "commit", timeout: 60000 });
 
     await page
-      .waitForSelector("h1", { timeout: 20000 })
+      .waitForSelector("h1", { timeout: 15000 })
       .catch(() =>
         console.warn(
-          "[profile] h1 not visible within 20s — extracting whatever is available",
+          "[profile] h1 not visible within 15s — extracting whatever is available",
         ),
       );
 
     // ── 3. Scroll to trigger lazy-loaded sections ──────────────────────
     // LinkedIn only renders experience / education / skills / about when the
     // user scrolls to them. A single scroll-to-bottom misses sections that
-    // load mid-page. We scroll incrementally in 600px steps with a short
-    // pause between each to let React render each section.
+    // load mid-page. We scroll incrementally with minimal pauses.
     await scrollProfile(page);
 
     // Wait for the experience section to be in the DOM before extracting.
@@ -88,7 +87,7 @@ export async function scrapeProfile(profileUrl) {
     await page
       .waitForSelector(
         '#experience, #experience-section, section[data-section="experience"], .artdeco-card h2',
-        { timeout: 15000 },
+        { timeout: 10000 },
       )
       .catch(() =>
         console.warn(
@@ -259,14 +258,14 @@ async function scrapeDetailPages(page, baseProfileUrl) {
       // Wait for at least one list item
       await page
         .waitForSelector("li.artdeco-list__item, ul.pvs-list > li, main li", {
-          timeout: 12_000,
+          timeout: 8_000,
         })
         .catch(() =>
           console.warn(`[profile] No list items found on ${key} detail page`),
         );
 
-      await scrollProfile(page);
-      await delay(400, 700);
+      // Detail pages load all content immediately, no scrolling needed
+      await delay(200, 400);
 
       result[key] = await page.evaluate((sectionType) => {
         // ── Shared helpers (self-contained for evaluate isolation) ─────────
@@ -523,9 +522,10 @@ async function scrapeDetailPages(page, baseProfileUrl) {
 async function scrollProfile(page) {
   // Re-evaluate the page height on every step because LinkedIn lazy-loads
   // content as you scroll — the page grows taller with each new section.
-  const stepPx = 500;
-  const stepMs = 550;
-  const maxSteps = 50; // safety cap
+  // Optimized: faster scrolling with reduced delays
+  const stepPx = 600;
+  const stepMs = 180; // Reduced from 550ms - much faster
+  const maxSteps = 25; // Reduced from 50 - sufficient for most profiles
 
   for (let i = 0; i < maxSteps; i++) {
     const { scrollY, totalHeight } = await page.evaluate(() => ({
@@ -545,7 +545,7 @@ async function scrollProfile(page) {
 
   // Scroll back to top so "about" / connections near the top card are rendered
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await new Promise((r) => setTimeout(r, 800));
+  await new Promise((r) => setTimeout(r, 300)); // Reduced from 800ms
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
