@@ -32,6 +32,47 @@ correlates these for session validation.
 production scale, cookie rotation across multiple accounts or a paid API
 (e.g. Proxycurl) would replace this layer.
 
+### Alternative: Google X-Ray Search (No Authentication)
+
+**NEW: Auth-free approach via Google search**
+
+An alternative scraping method using Google X-Ray search has been implemented for
+scenarios where LinkedIn authentication is not available or desirable:
+
+**Search Query Pattern:**
+```
+site:linkedin.com/in/ "Company Name"
+```
+
+This tells Google to return only LinkedIn profile pages that mention the company name.
+
+**Advantages:**
+- ✅ No LinkedIn cookie or authentication required
+- ✅ Faster execution (~0.2s per result vs ~12-15s per profile)
+- ✅ Lower detection risk (not accessing LinkedIn directly)
+- ✅ Can scale to higher volumes without LinkedIn account limits
+- ✅ No risk of LinkedIn account suspension
+
+**Limitations:**
+- ❌ Limited data: only name, title (if in snippet), and profile URL
+- ❌ No email patterns, seniority classification, or detailed experience
+- ❌ Google rate limits (~500-1000 searches per day per IP)
+- ❌ Result cap (~100 profiles max per search query)
+- ❌ Dependent on Google's indexing and snippet quality
+
+**Implementation:**
+Uses Playwright to search Google, parse search results, and extract LinkedIn profile
+information from search snippets. Results are post-processed to deduplicate and
+filter for company relevance.
+
+**When to Use:**
+- Quick employee list discovery (lead generation, recruitment sourcing)
+- No LinkedIn account available
+- Scraping many companies (100+) without hitting LinkedIn limits
+- Building initial contact databases before detailed enrichment
+
+See [GOOGLE_XRAY_GUIDE.md](./GOOGLE_XRAY_GUIDE.md) for complete documentation.
+
 ---
 
 ## 2. Bot Detection Evasion

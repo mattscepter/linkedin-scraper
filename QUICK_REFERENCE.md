@@ -2,15 +2,44 @@
 
 ## 🚀 Basic Usage
 
+### Method 1: Direct LinkedIn Scraping (Requires Auth)
+
 ```bash
 npm start -- --company <URL> --limit 100
 ```
 
 **Output**: Name, title, profile URL, seniority, email pattern  
 **Speed**: ~30-45 seconds for 100 employees  
-**Use for**: Employee lists, lead generation, talent analysis
+**Use for**: Detailed employee data, email inference, seniority analysis
+
+### Method 2: 🆕 Google X-Ray Search (No Auth!)
+
+```bash
+npm start -- --xray "Company Name" --limit 50
+```
+
+**Output**: Name, title (if available), profile URL  
+**Speed**: ~5-10 seconds for 50 employees  
+**Use for**: Quick employee lists, no authentication available, high-volume scraping
+
+## 🤔 Which Method to Use?
+
+| Feature | Direct LinkedIn | Google X-Ray |
+|---------|----------------|--------------|
+| Authentication | ✅ Required | ❌ Not required |
+| Speed | ~0.3s/profile | ~0.2s/profile |
+| Data Quality | ⭐⭐⭐⭐⭐ Complete | ⭐⭐ Basic |
+| Email Patterns | ✅ Yes | ❌ No |
+| Seniority | ✅ Yes | ❌ No |
+| Daily Limit | 100-150 profiles | 500-1000 searches |
+| Risk | Medium | Low |
+
+**Use Direct LinkedIn when:** You need detailed data (email, seniority, experience)  
+**Use Google X-Ray when:** You need quick lists, don't have auth, or scraping many companies
 
 ## ⚙️ Common Commands
+
+### Direct LinkedIn Scraping
 
 ```bash
 # Quick test (10 employees)
@@ -24,6 +53,21 @@ npm start -- --company https://www.linkedin.com/company/stripe/ --limit 50 --dom
 
 # Debug mode
 DEBUG=1 npm start -- --company <URL> --limit 5
+```
+
+### Google X-Ray Search (No Auth)
+
+```bash
+# Basic search
+npm start -- --xray "GitHub" --limit 50
+
+# With CSV export
+npm start -- --xray "Rebel Foods" --limit 100 --csv
+
+# Multiple companies
+npm start -- --xray "Microsoft"
+npm start -- --xray "Apple"
+npm start -- --xray "Google"
 ```
 
 ## 📊 Output Fields

@@ -41,6 +41,23 @@ cp .env.example .env
 - Running on cloud/datacenter IPs (AWS, GCP, Azure)
 - Scraping 100+ profiles/day
 - Using multiple accounts simultaneously
+- **Using Google X-Ray search** (recommended to avoid CAPTCHA)
+
+#### Option 1: Proxy Pool (Automatic Rotation) 🔄
+
+Create `proxies.txt` in project root with your proxy list:
+
+```
+151.123.176.75:3129
+209.50.169.135:3129
+104.207.40.19:3129
+```
+
+The scraper will automatically rotate through proxies for Google X-Ray searches!
+
+See **[PROXY_SETUP.md](PROXY_SETUP.md)** for complete guide.
+
+#### Option 2: Single Proxy (via .env)
 
 Add to `.env`:
 
@@ -68,12 +85,35 @@ npm start -- --company https://www.linkedin.com/company/github/ --limit 50
 npm start -- --profile https://www.linkedin.com/in/example-user/
 ```
 
+#### 🆕 Google X-Ray Search (No Auth Required!)
+
+Search for company employees via Google - **no LinkedIn cookie needed**:
+
+```bash
+npm start -- --xray "GitHub" --limit 50
+```
+
+**Benefits:**
+- ✅ No LinkedIn authentication required
+- ✅ Faster than direct scraping
+- ✅ Lower detection risk
+- ❌ Limited data (name, title, profile URL only)
+
+**⚠️ Google CAPTCHA Warning:**
+Google may show CAPTCHA after several searches. If you get 0 results:
+1. Check screenshot in `data/` folder (run with `DEBUG=1`)
+2. Wait 24 hours or use different IP/proxy
+3. Use direct LinkedIn scraping instead: `--company <url>`
+
+See [docs/GOOGLE_XRAY_GUIDE.md](docs/GOOGLE_XRAY_GUIDE.md) for complete guide and solutions.
+
 ### All options
 
 ```
 Options:
   -c, --company <url>   Scrape employees from a LinkedIn company URL
   -p, --profile <url>   Scrape data from a LinkedIn profile URL
+  -x, --xray <name>     Search for company employees via Google X-Ray (no auth required)
   -o, --output <path>   Output file path (without extension)  [default: data/<slug>]
   -l, --limit <number>  Max employees to collect              [default: 100]
   -d, --domain <domain> Company domain for email pattern inference (e.g. github.com)
@@ -171,6 +211,19 @@ curl -X POST http://localhost:3000/api/scrape/batch \
     "type": "profile"
   }'
 ```
+
+#### 5. 🆕 Google X-Ray Search (No Auth!)
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/xray \
+  -H "Content-Type: application/json" \
+  -d '{
+    "companyName": "GitHub",
+    "limit": 50
+  }'
+```
+
+**No LinkedIn authentication required!** Returns basic employee info via Google search.
 
 ### Test the API
 

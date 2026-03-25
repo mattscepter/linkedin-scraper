@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { runCompanyScrape } from "./commands/scrapeCompany.js";
 import { runProfileScrape } from "./commands/scrapeProfile.js";
+import { runGoogleXrayScrape } from "./commands/scrapeCompanyXray.js";
 import { validateLinkedInUrl } from "./utils/validation.js";
 
 const app = express();
@@ -213,6 +214,70 @@ app.post("/api/scrape/batch", async (req, res) => {
   }
 });
 
+// Google X-Ray search endpoint (no auth required)
+app.post("/api/scrape/xray", async (req, res) => {
+  try {
+    const { companyName, limit = 50 } = req.body;
+
+    // Validation
+    if (!companyName) {
+      return res.status(400).json({
+        error: "Missing required field: companyName",
+        example: {
+          companyName: "GitHub",
+          limit: 50,
+        },
+        note: "This endpoint searches Google for LinkedIn profiles - no LinkedIn auth required",
+      });
+    }
+
+    if (typeof companyName !== "string" || companyName.trim().length === 0) {
+      return res.status(400).json({
+        error: "companyName must be a non-empty string",
+        provided: companyName,
+      });
+    }
+
+    if (limit && (limit < 1 || limit > 100)) {
+      return res.status(400).json({
+        error: "Limit must be between 1 and 100",
+        provided: limit,
+        note: "Google X-Ray search is limited by Google's search result pagination",
+      });
+    }
+
+    console.log(
+      `[API] Google X-Ray search: "${companyName}" (limit: ${limit})`,
+    );
+
+    const result = await runGoogleXrayScrape(companyName, {
+      limit,
+      includeTitle: true,
+    });
+
+    res.json({
+      success: true,
+      data: result,
+      meta: {
+        scrapedAt: new Date().toISOString(),
+        source: "google-xray-search",
+        authRequired: false,
+        dataQuality: "limited",
+        note: "Results from Google search - includes name, title, and profile URL only",
+      },
+    });
+  } catch (error) {
+    console.error("[API] X-Ray search error:", error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      type: error.constructor.name,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -224,6 +289,7 @@ app.use((req, res) => {
       "POST /api/scrape/company": "Scrape company employee list",
       "POST /api/scrape/profile": "Scrape individual profile",
       "POST /api/scrape/batch": "Scrape multiple URLs",
+      "POST /api/scrape/xray": "Google X-Ray search (no auth required)",
     },
     documentation: "See API.md for detailed documentation",
   });
@@ -246,15 +312,27 @@ const server = app.listen(PORT, () => {
   console.log(`📡 Running on: http://localhost:${PORT}`);
   console.log(`\n📋 Available endpoints:`);
   console.log(`   GET  /health                 - Health check`);
-  console.log(`   POST /api/scrape/company     - Scrape company employees`);
-  console.log(`   POST /api/scrape/profile     - Scrape individual profile`);
-  console.log(`   POST /api/scrape/batch       - Scrape multiple URLs`);
-  console.log(`\n💡 Example request:`);
+  console.log(
+    `   POST /api/scrape/company     - Scrape company employees (auth required)`,
+  );
+  console.log(
+    `   POST /api/scrape/profile     - Scrape individual profile (auth required)`,
+  );
+  console.log(
+    `   POST /api/scrape/batch       - Scrape multiple URLs (auth required)`,
+  );
+  console.log(
+    `   POST /api/scrape/xray        - Google X-Ray search (no auth!) 🆕`,
+  );
+  console.log(`\n💡 Example requests:`);
   console.log(`   curl -X POST http://localhost:${PORT}/api/scrape/company \\`);
   console.log(`        -H "Content-Type: application/json" \\`);
   console.log(
     `        -d '{"url":"https://linkedin.com/company/github","limit":10}'`,
   );
+  console.log(`\n   curl -X POST http://localhost:${PORT}/api/scrape/xray \\`);
+  console.log(`        -H "Content-Type: application/json" \\`);
+  console.log(`        -d '{"companyName":"GitHub","limit":50}'`);
   console.log(`\n📖 Documentation: See API.md for complete reference`);
   console.log(`\n`);
 });

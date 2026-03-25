@@ -9,7 +9,8 @@
     "server": "node src/server.js",
     "dev": "nodemon src/server.js",
     "scrape:company": "node src/index.js --company",
-    "scrape:profile": "node src/index.js --profile"
+    "scrape:profile": "node src/index.js --profile",
+    "test:proxies": "node test-proxies.js"
   },
   "dependencies": {
     "commander": "^12.1.0",

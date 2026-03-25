@@ -326,6 +326,118 @@ curl -X POST http://localhost:3000/api/scrape/batch \
 
 ---
 
+### 5. 🆕 Google X-Ray Search (No Auth Required)
+
+**POST** `/api/scrape/xray`
+
+Search for company employees via Google X-Ray search - **no LinkedIn authentication required!**
+
+**Request Body:**
+
+```json
+{
+  "companyName": "GitHub",
+  "limit": 50
+}
+```
+
+**Parameters:**
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `companyName` | string | ✅ Yes | - | Company name to search (e.g. "GitHub", "Microsoft") |
+| `limit` | number | No | 50 | Max results to return (max: 100) |
+
+**Success Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "employees": [
+      {
+        "name": "Jane Doe",
+        "title": "Senior Software Engineer",
+        "profileUrl": "https://linkedin.com/in/jane-doe",
+        "snippet": "Senior Software Engineer at GitHub..."
+      },
+      {
+        "name": "John Smith",
+        "title": "Product Manager",
+        "profileUrl": "https://linkedin.com/in/john-smith",
+        "snippet": "Product Manager at GitHub. Building developer tools..."
+      }
+    ],
+    "meta": {
+      "source": "google-xray-search",
+      "searchQuery": "site:linkedin.com/in/ \"GitHub\"",
+      "companyName": "GitHub",
+      "totalFound": 87,
+      "returned": 50,
+      "scrapedAt": "2026-03-25T10:30:00.000Z",
+      "note": "Data extracted from Google search results - limited to publicly visible information"
+    }
+  },
+  "meta": {
+    "scrapedAt": "2026-03-25T10:30:00.000Z",
+    "source": "google-xray-search",
+    "authRequired": false,
+    "dataQuality": "limited",
+    "note": "Results from Google search - includes name, title, and profile URL only"
+  }
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/xray \
+  -H "Content-Type: application/json" \
+  -d '{
+    "companyName": "GitHub",
+    "limit": 50
+  }'
+```
+
+**JavaScript Example:**
+
+```javascript
+const response = await fetch("http://localhost:3000/api/scrape/xray", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    companyName: "GitHub",
+    limit: 50,
+  }),
+});
+
+const { data } = await response.json();
+console.log(`Found ${data.employees.length} employees`);
+data.employees.forEach((emp) => {
+  console.log(`${emp.name} - ${emp.title || "N/A"}`);
+});
+```
+
+**Trade-offs:**
+
+✅ **Advantages:**
+
+- No LinkedIn authentication required
+- Faster than direct scraping (~0.5s vs 12-15s per profile)
+- Lower detection risk
+- Can scale to higher volumes
+
+❌ **Limitations:**
+
+- Limited data (name, title\*, profile URL only)
+- No email patterns, seniority, or detailed experience
+- Google search result cap (~100 profiles max)
+- Titles may be missing or inaccurate
+- Subject to Google rate limits
+
+See [docs/GOOGLE_XRAY_GUIDE.md](docs/GOOGLE_XRAY_GUIDE.md) for complete guide and best practices.
+
+---
+
 ## Rate Limiting & Constraints
 
 | Constraint                          | Limit                 | Reason                                 |

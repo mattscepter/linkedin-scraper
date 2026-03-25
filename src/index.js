@@ -3,6 +3,7 @@ import "dotenv/config";
 import { program } from "commander";
 import { runCompanyScrape } from "./commands/scrapeCompany.js";
 import { runProfileScrape } from "./commands/scrapeProfile.js";
+import { runGoogleXrayScrape } from "./commands/scrapeCompanyXray.js";
 
 program
   .name("linkedin-scraper")
@@ -12,6 +13,10 @@ program
 program
   .option("-c, --company <url>", "Scrape employees from a LinkedIn company URL")
   .option("-p, --profile <url>", "Scrape data from a LinkedIn profile URL")
+  .option(
+    "-x, --xray <name>",
+    "Search for company employees via Google X-Ray (no auth required)"
+  )
   .option("-o, --output <path>", "Output file path (without extension)")
   .option(
     "-l, --limit <number>",
@@ -29,19 +34,21 @@ program.parse(process.argv);
 const opts = program.opts();
 
 // Validate that exactly one mode is specified
-if (!opts.company && !opts.profile) {
+if (!opts.company && !opts.profile && !opts.xray) {
   console.error(
-    "\nError: Provide either --company <url> or --profile <url>\n\n" +
+    "\nError: Provide either --company <url>, --profile <url>, or --xray <name>\n\n" +
       "Examples:\n" +
       "  npm start -- --company https://www.linkedin.com/company/github/\n" +
-      "  npm start -- --profile https://www.linkedin.com/in/example-user/\n",
+      "  npm start -- --profile https://www.linkedin.com/in/example-user/\n" +
+      "  npm start -- --xray \"GitHub\" --limit 50\n",
   );
   process.exit(1);
 }
 
-if (opts.company && opts.profile) {
+const modeCount = [opts.company, opts.profile, opts.xray].filter(Boolean).length;
+if (modeCount > 1) {
   console.error(
-    "\nError: Use --company OR --profile, not both in a single run.\n",
+    "\nError: Use --company OR --profile OR --xray, not multiple modes in a single run.\n",
   );
   process.exit(1);
 }
@@ -57,10 +64,17 @@ if (opts.company && opts.profile) {
         csv: opts.csv,
         domain: opts.domain,
       });
-    } else {
+    } else if (opts.profile) {
       await runProfileScrape(opts.profile, {
         output: opts.output,
         csv: opts.csv,
+      });
+    } else if (opts.xray) {
+      await runGoogleXrayScrape(opts.xray, {
+        limit: opts.limit,
+        outputPath: opts.output,
+        csv: opts.csv,
+        includeTitle: true,
       });
     }
   } catch (err) {
