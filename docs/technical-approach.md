@@ -116,6 +116,8 @@ The scroll loop works as follows:
 
 ## 5. Rate Limiting and Error Handling
 
+### 5.1 Application-Level Rate Limiting
+
 **Jittered delays:** Every page navigation waits a random 3–8 seconds; every
 scroll event waits a random 1.5–3.5 seconds. Humans exhibit natural rhythm
 variance — uniform delays are a detectable bot signal.
@@ -130,6 +132,109 @@ backoff: 30s × attempt number. Maximum 3 attempts per operation.
 **Graceful null-filling:** Missing fields always serialize as `null` rather
 than being omitted, ensuring a consistent JSON schema regardless of profile
 completeness.
+
+### 5.2 IP-Based Rate Limiting & Proxy Strategy
+
+**Current Implementation:**
+
+The scraper includes built-in proxy support via environment variable:
+
+```javascript
+// src/scrapers/browser.js
+const proxy = process.env.PROXY_URL
+  ? { server: process.env.PROXY_URL }
+  : undefined;
+```
+
+**When Proxies Are NOT Required:**
+
+- ✅ Small-scale usage: 10-100 profiles/day
+- ✅ Residential/home internet connection
+- ✅ Single LinkedIn account
+- ✅ Proper delays between requests (3-8s)
+
+LinkedIn's IP rate limiting is relatively lenient for normal viewing patterns.
+A residential IP with human-like delays can scrape 50-150 profiles/day without
+triggering blocks.
+
+**When Proxies ARE Required:**
+
+1. **Datacenter/Cloud IPs** - LinkedIn aggressively blocks AWS, GCP, Azure, DigitalOcean
+   IPs. If running on a VPS, residential proxies are mandatory.
+
+2. **High Volume** - Beyond 100-150 profiles/day from a single IP, LinkedIn begins
+   flagging the traffic as suspicious.
+
+3. **Multiple Accounts** - Running 5+ accounts from the same IP creates a
+   detectable fingerprint.
+
+4. **Previous Blocks** - If an IP has been flagged before, even low-volume
+   traffic may trigger immediate blocks.
+
+**Proxy Types:**
+
+| Type                  | Detection Risk | Cost/GB | Use Case                        |
+| --------------------- | -------------- | ------- | ------------------------------- |
+| Residential           | Very Low       | $10-15  | Production scraping             |
+| ISP (Residential ASN) | Low            | $3-8    | Medium-scale (100-500/day)      |
+| Datacenter            | Very High      | $1-3    | ❌ Not recommended for LinkedIn |
+
+**Recommended Providers:**
+
+- **Bright Data** (BrightData.com) - Most reliable, ~$10/GB
+- **Oxylabs** (Oxylabs.io) - Enterprise-grade, ~$12/GB
+- **Smartproxy** (Smartproxy.com) - Budget-friendly, ~$8/GB
+- **NetNut** (Netnut.io) - Static residential IPs, ~$15/GB
+
+**Proxy Configuration Example:**
+
+```bash
+# .env
+LINKEDIN_COOKIE=your_li_at_cookie
+PROXY_URL=http://username:password@proxy.provider.com:8080
+
+# For SOCKS5 proxies:
+# PROXY_URL=socks5://username:password@proxy.provider.com:1080
+```
+
+**Production Proxy Strategy (1000+ profiles/day):**
+
+```javascript
+// Pseudo-code for proxy rotation
+const proxyPool = [
+  "http://user:pass@proxy1.provider.com:8080",
+  "http://user:pass@proxy2.provider.com:8080",
+  "http://user:pass@proxy3.provider.com:8080",
+];
+
+// Assign 1 proxy per LinkedIn account for entire session (sticky session)
+const accountProxyMap = {
+  "account1@email.com": proxyPool[0],
+  "account2@email.com": proxyPool[1],
+  "account3@email.com": proxyPool[2],
+};
+
+// Each worker uses consistent proxy for 50-100 requests, then rotates
+```
+
+**IP Rotation Strategy:**
+
+- **Sticky Sessions**: Use same proxy for entire scrape session (10-30 mins)
+- **Session Rotation**: Rotate to new proxy every 50-100 profile views
+- **Geographic Consistency**: Keep IP in same region as LinkedIn account registration
+- **Connection Pooling**: Reuse TCP connections within session to avoid reconnect overhead
+
+**Cost Analysis:**
+
+| Scale           | Profiles/Day | Accounts | Proxies Needed | Monthly Cost |
+| --------------- | ------------ | -------- | -------------- | ------------ |
+| Small (current) | 50-100       | 1        | 0 (no proxy)   | $0           |
+| Medium          | 500-1000     | 5-10     | 5-10           | $50-150      |
+| Large           | 10,000+      | 100+     | 100+           | $1,000+      |
+| Enterprise      | 100,000+     | API only | N/A            | $500-2,000   |
+
+At enterprise scale (100K+ profiles/day), using Proxycurl API (~$0.01/profile)
+becomes more cost-effective than managing proxy infrastructure.
 
 ---
 

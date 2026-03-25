@@ -1,0 +1,309 @@
+{
+  "employees": [
+    {
+      "name": "chetan kotian",
+      "title": "Tech shinobi @faasos",
+      "profileUrl": "https://www.linkedin.com/in/chetankotian",
+      "seniority": "mid"
+    },
+    {
+      "name": "Udaiveer Singh Parmar",
+      "title": "Engineering Lead at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/udaiveer-singh-parmar-3677a0179",
+      "seniority": "lead"
+    },
+    {
+      "name": "Yash Londhe",
+      "title": "🔧 Senior Principal Engineer | Scalable Systems @ Rebel Foods | Java, Spring Boot, Distributed Systems | ex-Oracle | ex-Accenture",
+      "profileUrl": "https://www.linkedin.com/in/yashlondhe",
+      "seniority": "senior"
+    },
+    {
+      "name": "Johney Barthwal",
+      "title": "SDE at Rebel Foods (Formerly Faasos)",
+      "profileUrl": "https://www.linkedin.com/in/johney-barthwal",
+      "seniority": "mid"
+    },
+    {
+      "name": "Noel Dason",
+      "title": "Product at Rebel Foods | Project Leader at Bookwallah",
+      "profileUrl": "https://www.linkedin.com/in/noel-dason",
+      "seniority": "mid"
+    },
+    {
+      "name": "Shreyas Hupare",
+      "title": "Software Development Engineer II at Rebel Foods | COEP'22",
+      "profileUrl": "https://www.linkedin.com/in/shreyas-hupare",
+      "seniority": "mid"
+    },
+    {
+      "name": "Ankit Kuthiala",
+      "title": "Software Development Engineer - III at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/ankit-kuthiala-337aaa137",
+      "seniority": "mid"
+    },
+    {
+      "name": "Aneek Ghosh",
+      "title": "SDE II at Rebel Foods || IIESTS’22 || Full Stack Web Development",
+      "profileUrl": "https://www.linkedin.com/in/aneekg8",
+      "seniority": "mid"
+    },
+    {
+      "name": "Raviraj Patil",
+      "title": "SDE-II at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/raviraj-patil-0946351b1",
+      "seniority": "mid"
+    },
+    {
+      "name": "Krunal Sonparate",
+      "title": "SDE - III at Rebel Foods | DA-IICT’17 | Node.js",
+      "profileUrl": "https://www.linkedin.com/in/krunal-sonparate-201018b5",
+      "seniority": "mid"
+    },
+    {
+      "name": "Sarita Gandhi",
+      "title": "Android Principal Engineer at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/sarita-gandhi-258806b7",
+      "seniority": "lead"
+    },
+    {
+      "name": "Shivangi Contractor",
+      "title": "Software Development Engineer - II at REBEL FOODS",
+      "profileUrl": "https://www.linkedin.com/in/shivangi-contractor-84bb6b200",
+      "seniority": "mid"
+    },
+    {
+      "name": "Gauresh Kambli",
+      "title": "Senior Android Developer | Kotlin | Java | Jetpack Compose | Mobile Technologies",
+      "profileUrl": "https://www.linkedin.com/in/gauresh-kambli-52270586",
+      "seniority": "senior"
+    },
+    {
+      "name": "Shrayank Mistry",
+      "title": "Software Engineer (SDE-2) @Rebel Foods | Java Developer | Master Of Technology (COEP, Pune)",
+      "profileUrl": "https://www.linkedin.com/in/shrayank-mistry-9b01bb24a",
+      "seniority": "mid"
+    },
+    {
+      "name": "Himani Mittal",
+      "title": "QA ENGINEER- II",
+      "profileUrl": "https://www.linkedin.com/in/himani-mittal-0355a1129",
+      "seniority": "mid"
+    },
+    {
+      "name": "Uma Taru",
+      "title": "SDE 2 @ Rebel Foods | Backend | COEP",
+      "profileUrl": "https://www.linkedin.com/in/uma-taru",
+      "seniority": "mid"
+    },
+    {
+      "name": "Ali Imam",
+      "title": "Backend at Rebel Foods | IIT Bombay '22",
+      "profileUrl": "https://www.linkedin.com/in/ali-imam-126336140",
+      "seniority": "mid"
+    },
+    {
+      "name": "Abhishek Tripathi",
+      "title": "Engineering Manager @ Rebel Foods| Ex-AirtelPaymentsBank | Ex-BookMyShow | Architectural Designing, Product Development and Team Management",
+      "profileUrl": "https://www.linkedin.com/in/abhishek-awadh-tripathi",
+      "seniority": "manager"
+    },
+    {
+      "name": "Rohit Saroj",
+      "title": "SDE III at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/rohit-saroj",
+      "seniority": "mid"
+    },
+    {
+      "name": "Akshay Shedge",
+      "title": "Senior iOS Devloper III at Rebel Foods (Formerly Faasos)",
+      "profileUrl": "https://www.linkedin.com/in/akshay-shedge-154411184",
+      "seniority": "senior"
+    },
+    {
+      "name": "AYUSH GOEL",
+      "title": "Data Science Engineer at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/ayush7goel",
+      "seniority": "mid"
+    },
+    {
+      "name": "Dhruvkant Shakyawar",
+      "title": "Data Scientist-II @Rebel Foods || IIT BOMBAY ’22",
+      "profileUrl": "https://www.linkedin.com/in/sdhruv1410",
+      "seniority": "mid"
+    },
+    {
+      "name": "Karan Sonkar",
+      "title": "🚀 Principal SDET | 10+ Yrs Exp | AI-Driven Test Automation | Playwright | Java | UI & API | CI/CD | DevX | Microservices | Quality Engineering",
+      "profileUrl": "https://www.linkedin.com/in/karansonkar",
+      "seniority": "lead"
+    },
+    {
+      "name": "Anshika Soni",
+      "title": "Data Analyst @ Rebel Foods (Formerly @faasos )| Python, SQL, AWS",
+      "profileUrl": "https://www.linkedin.com/in/anshikasoni1",
+      "seniority": "mid"
+    },
+    {
+      "name": "Rahul Handigund",
+      "title": "QA Engineer at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/rahul-handigund-3542b8314",
+      "seniority": "mid"
+    },
+    {
+      "name": "Anuradha T.",
+      "title": "Engineering Manager, Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/anuradha-t-7a4952194",
+      "seniority": "manager"
+    },
+    {
+      "name": "Abhay Mishra",
+      "title": "ReactJs developer| Nextjs | Freelancing | Js | Ts | jQuery | html | Tailwind | CSS",
+      "profileUrl": "https://www.linkedin.com/in/abhay-mishra-0a266b193",
+      "seniority": "mid"
+    },
+    {
+      "name": "Vishal Chaudhari",
+      "title": "Engineering Manager at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/vishalmca11",
+      "seniority": "manager"
+    },
+    {
+      "name": "Renuka Pichika",
+      "title": "Product Manager at Rebel Foods | B2B SaaS & Platform Products | SCM Tech",
+      "profileUrl": "https://www.linkedin.com/in/renuka-pichika-9239a5158",
+      "seniority": "manager"
+    },
+    {
+      "name": "wasim mansuri",
+      "title": "Principal UI/ UX Designer @ Rebel Foods | Web Design, UI/UX",
+      "profileUrl": "https://www.linkedin.com/in/wasim-mansuri-92511512",
+      "seniority": "lead"
+    },
+    {
+      "name": "Akash Ramjyothi",
+      "title": "Software Engineer | GSOC ’22 | GSOC ’20 | 6🌟 (2224) at CodeChef | Expert (1865) at CodeForces | ACM-ICPC Regionalist | Knight (1914) at LeetCode | Full-Stack | Problem Solver",
+      "profileUrl": "https://www.linkedin.com/in/akash-ramjyothi",
+      "seniority": "mid"
+    },
+    {
+      "name": "Yogesh Malpani",
+      "title": "Product Manager at Rebel Foods (Formerly Faasos)",
+      "profileUrl": "https://www.linkedin.com/in/yogesh-malpani-957b7229",
+      "seniority": "manager"
+    },
+    {
+      "name": "Siddhant Bhawnani",
+      "title": "QA Lead at Rebel Foods (Formerly Faasos)",
+      "profileUrl": "https://www.linkedin.com/in/siddhant-bhawnani",
+      "seniority": "lead"
+    },
+    {
+      "name": "Swapnil K.",
+      "title": "Android Developer @RebelFoods",
+      "profileUrl": "https://www.linkedin.com/in/swapnilkadlag",
+      "seniority": "mid"
+    },
+    {
+      "name": "Kanhai Parekh",
+      "title": "Principal Product Manager | Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/kanhaiparekh",
+      "seniority": "lead"
+    },
+    {
+      "name": "sharyu pednekar",
+      "title": "senior Human resources executive",
+      "profileUrl": "https://www.linkedin.com/in/sharyu-pednekar-520008204",
+      "seniority": "senior"
+    },
+    {
+      "name": "Jaymeen Kachhiya",
+      "title": "SDE 2 at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/jaymeen-kachhiya-806615136",
+      "seniority": "mid"
+    },
+    {
+      "name": "Kushal Jaisinghani",
+      "title": "Data Analyst",
+      "profileUrl": "https://www.linkedin.com/in/kushal-jaisinghani-7ab10114b",
+      "seniority": "mid"
+    },
+    {
+      "name": "Lalit Mishra",
+      "title": "Engineering Lead @ Rebel Foods | Architectural Design, Team Building",
+      "profileUrl": "https://www.linkedin.com/in/lalit--mishra",
+      "seniority": "lead"
+    },
+    {
+      "name": "Rushikesh Mujumale",
+      "title": "DevOps Engineer | Scalable & Cost-Effective Cloud Infra ☁️ | AWS | Docker 🐳 | Terraform 📦 | ELK 📊 | Automation & Observability 🔍",
+      "profileUrl": "https://www.linkedin.com/in/rushikesh-mujumale-527262168",
+      "seniority": "mid"
+    },
+    {
+      "name": "Krupa Vithalani",
+      "title": "Assistant Manager - Human Resource Business Partner",
+      "profileUrl": "https://www.linkedin.com/in/krupa-vithalani-78533819b",
+      "seniority": "manager"
+    },
+    {
+      "name": "Harshita Lal",
+      "title": "Senior Executive @Rebel Foods || People & Culture || Talent acquisition",
+      "profileUrl": "https://www.linkedin.com/in/harshita-lal-015536214",
+      "seniority": "senior"
+    },
+    {
+      "name": "Priyesh Sharma",
+      "title": "Senior Product Manager at Rebel Foods | Entrepreneurial Background",
+      "profileUrl": "https://www.linkedin.com/in/priyeshsharma-bidec",
+      "seniority": "senior"
+    },
+    {
+      "name": "Rajendra Kumar",
+      "title": "Building Tech at Rebel Foods / EatSure",
+      "profileUrl": "https://www.linkedin.com/in/kumar-rajendra-rk",
+      "seniority": "mid"
+    },
+    {
+      "name": "Vaibhavi Garg",
+      "title": "Product | ISB Co'25 | BITS Goa",
+      "profileUrl": "https://www.linkedin.com/in/vaibhavi-garg-9274b5185",
+      "seniority": "mid"
+    },
+    {
+      "name": "Devashish Singh",
+      "title": "Rebel Foods ||Tata Consumer Products(PPO) || IMT Ghaziabad ||PEC",
+      "profileUrl": "https://www.linkedin.com/in/devashish-singh-2b720517a",
+      "seniority": "mid"
+    },
+    {
+      "name": "Vishal Jadhav",
+      "title": "Senior Manager @ Rebel Foods | MBA in Marketing",
+      "profileUrl": "https://www.linkedin.com/in/vishal-jadhav-5a73846b",
+      "seniority": "senior"
+    },
+    {
+      "name": "Er. Mahesh Dharma Patil",
+      "title": "Test Lead at Rebel Foods (Formerly Faasos)",
+      "profileUrl": "https://www.linkedin.com/in/er-mahesh-dharma-patil-036a92131",
+      "seniority": "lead"
+    },
+    {
+      "name": "Azhar Faiz Samdani",
+      "title": "VP of Technology at Rebel Foods",
+      "profileUrl": "https://www.linkedin.com/in/azharsamdani",
+      "seniority": "vp"
+    },
+    {
+      "name": "Akshay Mohan",
+      "title": "Product @Rebel Foods ex PlaySimple Games | SJMSOM, IIT Bombay 2022-24 | Sports Secretary | Amazon | Vertiv",
+      "profileUrl": "https://www.linkedin.com/in/akshay-mohan-",
+      "seniority": "mid"
+    }
+  ],
+  "meta": {
+    "sourceUrl": "https://www.linkedin.com/company/rebel-foods/",
+    "scrapedAt": "2026-03-24T18:35:09.608Z",
+    "totalCollected": 50
+  }
+}

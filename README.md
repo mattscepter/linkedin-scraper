@@ -32,6 +32,24 @@ cp .env.example .env
 3. Copy the **Value** of the `li_at` cookie
 4. Paste it into `.env` as `LINKEDIN_COOKIE=<value>`
 
+### Optional: Proxy Configuration
+
+**Proxies are NOT required for small-scale usage** (10-100 profiles/day from residential IP).
+
+**Use a proxy when:**
+
+- Running on cloud/datacenter IPs (AWS, GCP, Azure)
+- Scraping 100+ profiles/day
+- Using multiple accounts simultaneously
+
+Add to `.env`:
+
+```bash
+PROXY_URL=http://username:password@proxy-server.com:8080
+```
+
+See [docs/technical-approach.md](docs/technical-approach.md#52-ip-based-rate-limiting--proxy-strategy) for detailed proxy strategies and provider recommendations.
+
 ---
 
 ## Usage

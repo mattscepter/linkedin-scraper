@@ -1,0 +1,137 @@
+{
+  "name": "Utkarsh Chaudhary",
+  "headline": "SDE BrowserStack | Ex - Founding Engineer at PropReturns (YC S21)",
+  "location": "Pune Division, Maharashtra, India",
+  "profileUrl": "https://www.linkedin.com/in/utkarsh2510",
+  "connections": 483,
+  "about": "I am full stack developer by profession and passion but will always be a tech enthusiast by heart. MERN stack being my main coding stack, I love to try out emerging new technologies like NextJs, AWS, Web3, Blockchain etc. I am a person who admires the tech behind every nits and bits of things around me. Any type of UI development intrigues me as it gives me the power to bring out my imaginations to life. I have had a very good experience in my domain through my current as well as my previous jobs, internships and personal projects and fortunately got the opportunities to learn new things and tackle various problems.",
+  "experience": [
+    {
+      "company": "BrowserStack",
+      "companyLogo": "https://media.licdn.com/dms/image/v2/D560BAQFHcmTInpwJOQ/company-logo_100_100/B56ZmBXnzGKEAY-/0/1758812077808/browserstack_logo?e=1775692800&v=beta&t=857BQpXUmfrYc2XnVFbGKi1W8bxTsK0GZ5ruD4SANFs",
+      "title": "Software Engineer",
+      "employmentType": "Full-time",
+      "startDate": "Apr 2024",
+      "endDate": "Present",
+      "duration": "2 yrs",
+      "totalTenure": null,
+      "location": "Mumbai, Maharashtra, India",
+      "workType": "Remote"
+    },
+    {
+      "company": "PropReturns (YC S21)",
+      "companyLogo": "https://media.licdn.com/dms/image/v2/C4D0BAQFxduRT13Z-Hw/company-logo_100_100/company-logo_100_100/0/1674193152007/propreturns_logo?e=1775692800&v=beta&t=729Ls_Ht5irvuEk2JkEs-MvDMt7bplOJSIOifL2paDo",
+      "title": "SDE",
+      "employmentType": "Full-time",
+      "startDate": "Sep 2022",
+      "endDate": "Apr 2024",
+      "duration": "1 yr 8 mos",
+      "totalTenure": "2 yrs 3 mos",
+      "location": "Mumbai, Maharashtra, India",
+      "workType": "On-site"
+    },
+    {
+      "company": "PropReturns (YC S21)",
+      "companyLogo": "https://media.licdn.com/dms/image/v2/C4D0BAQFxduRT13Z-Hw/company-logo_100_100/company-logo_100_100/0/1674193152007/propreturns_logo?e=1775692800&v=beta&t=729Ls_Ht5irvuEk2JkEs-MvDMt7bplOJSIOifL2paDo",
+      "title": "SDE",
+      "employmentType": "Part-time",
+      "startDate": "Feb 2022",
+      "endDate": "Sep 2022",
+      "duration": "8 mos",
+      "totalTenure": "2 yrs 3 mos",
+      "location": null,
+      "workType": "Remote"
+    },
+    {
+      "company": "DSC BVP Pune",
+      "companyLogo": "https://media.licdn.com/dms/image/v2/D560BAQEU2g6gSTTsDg/company-logo_100_100/company-logo_100_100/0/1725982200387?e=1775692800&v=beta&t=YxxyH7jfkflt8BPGixjCFVqmsq3XT445qjROXKFzhTM",
+      "title": "Technical Team Member",
+      "employmentType": null,
+      "startDate": "Sep 2020",
+      "endDate": "Jun 2023",
+      "duration": "2 yrs 10 mos",
+      "totalTenure": null,
+      "location": "Pune Division, Maharashtra, India",
+      "workType": null
+    },
+    {
+      "company": "Zedd Labz",
+      "companyLogo": "https://media.licdn.com/dms/image/v2/C4E0BAQFqqkRpP9cWJA/company-logo_100_100/company-logo_100_100/0/1630641781782?e=1775692800&v=beta&t=bqetZG8eLXmu-BnnA6kvSEjZL9mdhrHVmIrQ4AIkoBU",
+      "title": "SDE",
+      "employmentType": "Internship",
+      "startDate": "Aug 2021",
+      "endDate": "Nov 2021",
+      "duration": "4 mos",
+      "totalTenure": null,
+      "workType": null
+    }
+  ],
+  "education": [
+    {
+      "school": "Bharati Vidyapeeth",
+      "degree": "Bachelor's degree, Computer Science",
+      "field": null,
+      "startDate": null,
+      "endDate": null,
+      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHvIm7lEBNBhg/company-logo_100_100/B4DZqROGx.GsAU-/0/1763372986102/bharatividyapeeth_logo?e=1775692800&v=beta&t=GXui_yUVYyh2gQgj4auHBH1vbLdKAwSh2SuD02NBJss"
+    },
+    {
+      "school": "Modern Academy Inter College",
+      "degree": "High School Diploma",
+      "field": "Mar 2004 - May 2019",
+      "startDate": null,
+      "endDate": null,
+      "logo": null
+    }
+  ],
+  "skills": [
+    "Project Planning",
+    "Full-Stack Development",
+    "React.js",
+    "JavaScript",
+    "UI/UX",
+    "Android Development",
+    "Web Development",
+    "Web Design",
+    "Flutter",
+    "HTML5",
+    "CSS",
+    "English",
+    "Scss",
+    "Graphic Design",
+    "MERN Stack",
+    "CSE",
+    "Cascading Style Sheets (CSS)",
+    "HTML",
+    "SASS",
+    "Node.js"
+  ],
+  "projects": [
+    {
+      "name": "Architectural Website",
+      "dateRange": "Dec 2021 - Present",
+      "description": "It is a full-stack react application built for a client who owns an architectural and designing firm.My job was to create an elegant website at the same time making it light. Some of the key features are the project image gallery and blog which will be created and edited by the owner."
+    },
+    {
+      "name": "Socialify",
+      "dateRange": "Jul 2021 - Aug 2021",
+      "description": "It is a full-stack and completely responsive social media web application built using ReactJs, Nodejs, Expressjs, MongoDb, Scss, and redux. I have also implemented web sockets for real-time search and chat features."
+    },
+    {
+      "name": "Infinity Chat",
+      "dateRange": "Jun 2021 - Jun 2021",
+      "description": "It is a MERN stack web application built for real-time chatting. It uses technologies like context API to store app state and socket.io for real-time chat functionality."
+    },
+    {
+      "name": "Movies Info",
+      "dateRange": "May 2021 - May 2021",
+      "description": "It is ReactJs based completely responsive website for getting information about various movies based on genre fetched from tmdb API."
+    },
+    {
+      "name": "Youtube-Clone",
+      "dateRange": "May 2021 - May 2021",
+      "description": "It is a reactjs based completely responsive clone of youtube."
+    }
+  ],
+  "scrapedAt": "2026-03-24T18:45:28.267Z"
+}
