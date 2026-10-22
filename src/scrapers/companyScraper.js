@@ -136,13 +136,28 @@ export async function scrapeCompany(companyUrl, options = {}) {
 
     // ── Scroll Loop with "Show more" button handling ──────────────────────
     // Scroll to bottom and click "Show more results" button to load all employees
-    // for DOM parsing. We stop when the button disappears or max scrolls reached.
+    // Parse incrementally to avoid data loss if scraper gets stuck
     let noProgressCount = 0;
+    let noNewEmployeesCount = 0;
     const maxScrolls = Math.ceil(maxEmployees / 10) + 5; // safety buffer
+    const maxPaginationTime = 5 * 60 * 1000; // 5 minutes timeout
+    const paginationStartTime = Date.now();
+
+    let employees = [];
+    const seenUrls = new Set();
+    let previousEmployeeCount = 0;
 
     console.log("[company] Starting pagination loop (scroll + button clicks)…");
 
     while (scrollCount < maxScrolls) {
+      // Check timeout
+      if (Date.now() - paginationStartTime > maxPaginationTime) {
+        console.log(
+          "\n[company] ⚠️  Pagination timeout reached (5 minutes) — saving collected data…",
+        );
+        break;
+      }
+
       // Scroll to bottom
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await scrollDelay();
@@ -152,14 +167,7 @@ export async function scrapeCompany(companyUrl, options = {}) {
       // The button can have different texts and classes, so we try multiple selectors
       let buttonClicked = false;
       try {
-        const buttonSelectors = [
-          'button:has-text("Show more results")',
-          'button:has-text("Show all results")',
-          'button[aria-label*="Show more"]',
-          "button.scaffold-finite-scroll__load-button",
-          "button[data-test-pagination-page-btn]",
-          'button:has-text("Next")',
-        ];
+        const buttonSelectors = ['button:has-text("Show more results")'];
 
         for (const selector of buttonSelectors) {
           try {
@@ -171,6 +179,7 @@ export async function scrapeCompany(companyUrl, options = {}) {
               console.log("[company] ✓ Clicked 'Show more' button");
               await delay(2000, 3000); // Wait for new batch to load
               buttonClicked = true;
+              noProgressCount = 0; // Reset when button is clicked
               break;
             }
           } catch {
@@ -181,31 +190,94 @@ export async function scrapeCompany(companyUrl, options = {}) {
         // No button found
       }
 
-      // Track progress - if no button found/clicked for 3 attempts, we're done
+      // Track progress - if no button found/clicked, increment counter
       if (!buttonClicked) {
         noProgressCount++;
-      } else {
-        noProgressCount = 0; // Reset if we made progress
+      }
+
+      // Parse DOM incrementally every 2 scrolls or after button click to detect new employees
+      if (scrollCount % 2 === 0 || buttonClicked || noProgressCount >= 2) {
+        previousEmployeeCount = employees.length;
+        const newEmployees = await parseDom(page, companyDomain);
+        let newCount = 0;
+
+        for (const emp of newEmployees) {
+          if (emp.profileUrl && !seenUrls.has(emp.profileUrl)) {
+            seenUrls.add(emp.profileUrl);
+            employees.push(emp);
+            newCount++;
+          } else if (!emp.profileUrl && emp.name) {
+            // Include employees without profile URLs but with names
+            const exists = employees.some(
+              (e) => e.name === emp.name && e.title === emp.title,
+            );
+            if (!exists) {
+              employees.push(emp);
+              newCount++;
+            }
+          }
+        }
+
+        if (newCount > 0) {
+          console.log(
+            `[company] ✓ Collected ${newCount} new employees (total: ${employees.length})`,
+          );
+          noNewEmployeesCount = 0; // Reset when we find new employees
+        } else {
+          noNewEmployeesCount++;
+        }
+
+        // Stop if we've reached the limit
+        if (employees.length >= maxEmployees) {
+          console.log(
+            `\n[company] Reached employee limit (${maxEmployees}) — stopping collection.`,
+          );
+          break;
+        }
       }
 
       process.stdout.write(
-        `\r[company] Pagination: scroll ${scrollCount}, button: ${buttonClicked ? "✓" : "-"}…`,
+        `\r[company] Pagination: scroll ${scrollCount}, collected: ${employees.length}, button: ${buttonClicked ? "✓" : "-"}…`,
       );
 
-      // Stop if no button found for 3 consecutive attempts
-      if (noProgressCount >= 3) {
+      // Stop if no button found AND no new employees for 2 consecutive parses
+      if (noProgressCount >= 2 && noNewEmployeesCount >= 2) {
         console.log(
-          "\n[company] No more 'Show more' buttons found — end of list reached.",
+          "\n[company] No more data to load (no button + no new employees) — end of list reached.",
         );
         break;
       }
     }
     process.stdout.write("\n");
 
-    // ── Parse DOM ──────────────────────────────────────────────────────────
-    // Parse all employee cards from the DOM
-    console.log("[company] Parsing employee cards from DOM…");
-    let employees = await parseDom(page, companyDomain);
+    // ── Final DOM Parse ────────────────────────────────────────────────────
+    // Parse one more time to catch any remaining employees
+    console.log("[company] Final parse to catch any remaining employees…");
+    const finalEmployees = await parseDom(page, companyDomain);
+    let finalCount = 0;
+
+    for (const emp of finalEmployees) {
+      if (emp.profileUrl && !seenUrls.has(emp.profileUrl)) {
+        seenUrls.add(emp.profileUrl);
+        employees.push(emp);
+        finalCount++;
+      } else if (!emp.profileUrl && emp.name) {
+        // Check if this name+title combo exists
+        const exists = employees.some(
+          (e) => e.name === emp.name && e.title === emp.title,
+        );
+        if (!exists) {
+          employees.push(emp);
+          finalCount++;
+        }
+      }
+    }
+
+    if (finalCount > 0) {
+      console.log(
+        `[company] ✓ Found ${finalCount} additional employees in final parse`,
+      );
+    }
 
     // Trim to requested limit
     employees = employees.slice(0, maxEmployees);

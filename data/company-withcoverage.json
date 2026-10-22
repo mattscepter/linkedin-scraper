@@ -1,0 +1,429 @@
+{
+  "employees": [
+    {
+      "name": "Faiz Alam",
+      "title": "Forward Deployed Engineer @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/faiz-alam-79a845197",
+      "seniority": "mid"
+    },
+    {
+      "name": "Syed Anique",
+      "title": "Engineering @WithCoverage | Founding Team | YC S21",
+      "profileUrl": "https://www.linkedin.com/in/syedanique",
+      "seniority": "mid"
+    },
+    {
+      "name": "Sasha Rich",
+      "title": "Engineering @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/sasha-rich",
+      "seniority": "mid"
+    },
+    {
+      "name": "Mehak Garg",
+      "title": "Eng @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/mehak--garg",
+      "seniority": "mid"
+    },
+    {
+      "name": "Cole Striler",
+      "title": "Director of Engineering @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/colestriler",
+      "seniority": "director"
+    },
+    {
+      "name": "Mitchell Reinig",
+      "title": "Director of Product & Operations @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/mitchell-reinig-33a51b101",
+      "seniority": "director"
+    },
+    {
+      "name": "Ishan Malhotra",
+      "title": "Building WithCoverage | ex-palantir",
+      "profileUrl": "https://www.linkedin.com/in/ishan--malhotra",
+      "seniority": "mid"
+    },
+    {
+      "name": "Jerico Brewer",
+      "title": "Head of Talent @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/jerico-brewer",
+      "seniority": "manager"
+    },
+    {
+      "name": "Zach Vlessing",
+      "title": "Chief of Staff / GTM Lead @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/zach-vlessing-597628188",
+      "seniority": "staff"
+    },
+    {
+      "name": "Tomer Shkori",
+      "title": "Growth @ WithCoverage | Ex-Bain",
+      "profileUrl": "https://www.linkedin.com/in/tomershkori",
+      "seniority": "mid"
+    },
+    {
+      "name": "Rohan Taneja",
+      "title": "Head of Growth at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/rohantaneja3",
+      "seniority": "manager"
+    },
+    {
+      "name": "Max Brenner",
+      "title": "Co-Founder & CEO of WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/max-brenner-136104",
+      "seniority": "c-suite"
+    },
+    {
+      "name": "JD Ross",
+      "title": "Co-founder of WithCoverage, Opendoor",
+      "profileUrl": "https://www.linkedin.com/in/justindylanross",
+      "seniority": "mid"
+    },
+    {
+      "name": "Seth Grossman",
+      "title": "Intern @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/seth-grossman",
+      "seniority": "intern"
+    },
+    {
+      "name": "Michael Rand",
+      "title": "Growth @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/michaelwrand",
+      "seniority": "mid"
+    },
+    {
+      "name": "Nicholas Ochs",
+      "title": "Software Engineer at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/nicholas-ochs-221235158",
+      "seniority": "mid"
+    },
+    {
+      "name": "Spencer Tucker",
+      "title": "Business Development & Growth @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/spencer-tucker",
+      "seniority": "mid"
+    },
+    {
+      "name": "Shreyansh Jain",
+      "title": "Team Lead - Risk Advisor Assistant at WithCoverage || Ex-Associate Operations Analyst at Bayzat || Ex-Disney+Hotstar.",
+      "profileUrl": "https://www.linkedin.com/in/shreyansh-jain-605b991b4",
+      "seniority": "junior"
+    },
+    {
+      "name": "Justin Shinnick",
+      "title": "Lead Risk Advisor",
+      "profileUrl": "https://www.linkedin.com/in/justin-shinnick",
+      "seniority": "lead"
+    },
+    {
+      "name": "Dhruv Chauhan, RIBO",
+      "title": "Commercial lines Insurance | Insurance Management Grad 🎓 | Pursuing CIP 🎯 | Strives for Excellence🏅| Believes in Innovative work approach💡",
+      "profileUrl": "https://www.linkedin.com/in/dhruv-chauhan-ribo-3a7a20106",
+      "seniority": "mid"
+    },
+    {
+      "name": "Harrison Lieber",
+      "title": "Growth @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/harrison-lieber",
+      "seniority": "mid"
+    },
+    {
+      "name": "Robert Wickers",
+      "title": "Growth Lead - Construction",
+      "profileUrl": "https://www.linkedin.com/in/robert-wickers-84215293",
+      "seniority": "lead"
+    },
+    {
+      "name": "Charlotte Watkins",
+      "title": "Lead Risk Advisor at With Coverage",
+      "profileUrl": "https://www.linkedin.com/in/charlotte-watkins-76aa10ab",
+      "seniority": "lead"
+    },
+    {
+      "name": "Myles Hilliard",
+      "title": "Co-Founder & Head of Risk Management",
+      "profileUrl": "https://www.linkedin.com/in/myles-hilliard",
+      "seniority": "manager"
+    },
+    {
+      "name": "Jing Li",
+      "title": "Community @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/jingli112",
+      "seniority": "mid"
+    },
+    {
+      "name": "Destiny Wright",
+      "title": "Senior Business Development & Growth",
+      "profileUrl": "https://www.linkedin.com/in/destiny-wright-6b5939203",
+      "seniority": "senior"
+    },
+    {
+      "name": "Rayna Dianne Chiong",
+      "title": "Seasoned Executive Assistant | Operations Manager",
+      "profileUrl": "https://www.linkedin.com/in/rayna-dianne-chiong-7a3759189",
+      "seniority": "manager"
+    },
+    {
+      "name": "Adrian Alfieri",
+      "title": "Founder & CEO at Verbatim | Case studies that close deals",
+      "profileUrl": "https://www.linkedin.com/in/adrian-alfieri",
+      "seniority": "c-suite"
+    },
+    {
+      "name": "Bhoomika Sharma",
+      "title": "Operations Assistant at WithCoverage|| Insurance Operations || Operations || Finance Operations",
+      "profileUrl": "https://www.linkedin.com/in/bhoomika-sharma-b1816a171",
+      "seniority": "mid"
+    },
+    {
+      "name": "Meet Chauhan",
+      "title": "Lead Risk Advisor Assistant - Team Lead",
+      "profileUrl": "https://www.linkedin.com/in/chauhanmeet",
+      "seniority": "lead"
+    },
+    {
+      "name": "Oscar Santiago",
+      "title": "Risk Team Manager",
+      "profileUrl": "https://www.linkedin.com/in/oscar-santiago",
+      "seniority": "manager"
+    },
+    {
+      "name": "Kyler Roper",
+      "title": "30% average savings on business insurance 📝",
+      "profileUrl": "https://www.linkedin.com/in/kylerroper",
+      "seniority": "mid"
+    },
+    {
+      "name": "Sriram Nalla",
+      "title": "President, Hospitality & Commercial Real Estate @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/sriram-nalla",
+      "seniority": "mid"
+    },
+    {
+      "name": "Jack Schaugaard",
+      "title": "Senior Business Development & Growth",
+      "profileUrl": "https://www.linkedin.com/in/jack-schaugaard-b321ab251",
+      "seniority": "senior"
+    },
+    {
+      "name": "Chris Benham",
+      "title": "Driving growth at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/rcbenham",
+      "seniority": "mid"
+    },
+    {
+      "name": "Ashna A",
+      "title": "Operations Specialist",
+      "profileUrl": "https://www.linkedin.com/in/ashna-a-843957200",
+      "seniority": "mid"
+    },
+    {
+      "name": "Sean Grossman",
+      "title": "WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/sean-grossman",
+      "seniority": "mid"
+    },
+    {
+      "name": "Joseph Lattin",
+      "title": "Lead Risk Advisor at With Coverage",
+      "profileUrl": "https://www.linkedin.com/in/joseph-lattin-202339191",
+      "seniority": "lead"
+    },
+    {
+      "name": "Byron Reyna-Corzo",
+      "title": "Senior Recruiter building the talent pipeline at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/byron-reyna-corzo-33494558",
+      "seniority": "senior"
+    },
+    {
+      "name": "Christopher Raymond Rarugal",
+      "title": "Business Insurance Admin Support | Underwriting & Insurance Operations | VA for Brokers",
+      "profileUrl": "https://www.linkedin.com/in/raymond0228",
+      "seniority": "mid"
+    },
+    {
+      "name": "Rya Payongayong",
+      "title": "Executive Assistant | Operations Specialist",
+      "profileUrl": "https://www.linkedin.com/in/rya-payongayong-5856b7196",
+      "seniority": "mid"
+    },
+    {
+      "name": "LinkedIn Member",
+      "title": "Operations Associate at WithCoverage",
+      "profileUrl": null,
+      "seniority": "junior"
+    },
+    {
+      "name": "Josh Gustafson",
+      "title": "Business Development & Growth",
+      "profileUrl": "https://www.linkedin.com/in/joshua-gustafson",
+      "seniority": "mid"
+    },
+    {
+      "name": "Ashley Alger",
+      "title": "Operations Manager @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/ashley-alger",
+      "seniority": "manager"
+    },
+    {
+      "name": "Miles Berger",
+      "title": "Risk Advisor @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/miles-berger",
+      "seniority": "mid"
+    },
+    {
+      "name": "Vin Gandolfo",
+      "title": "Founding Team - Construction at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/vingandolfo3",
+      "seniority": "mid"
+    },
+    {
+      "name": "Mary Harding",
+      "title": "Lead Risk Advisor at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/mary-harding-7013a0133",
+      "seniority": "lead"
+    },
+    {
+      "name": "Shreyas Jain",
+      "title": "Lead Risk Advisor Assistant (Construction) I WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/jainshreyas",
+      "seniority": "lead"
+    },
+    {
+      "name": "Juawana A.",
+      "title": null,
+      "profileUrl": "https://www.linkedin.com/in/juawanaallen",
+      "seniority": null
+    },
+    {
+      "name": "Chirag Sanghani",
+      "title": "Insurance | Claims Operations Specialist at Withcoverage |",
+      "profileUrl": "https://www.linkedin.com/in/chirag-sanghani-1410b359",
+      "seniority": "mid"
+    },
+    {
+      "name": "Julia Mozilo",
+      "title": "Risk Advisor at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/julia-mozilo-00a865197",
+      "seniority": "mid"
+    },
+    {
+      "name": "Anshu Mohan",
+      "title": "Growth Lead @ With Coverage",
+      "profileUrl": "https://www.linkedin.com/in/amohan4",
+      "seniority": "lead"
+    },
+    {
+      "name": "Anthony Cavalli",
+      "title": "Lead Risk Advisor at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/anthony-cavalli-aa84a4a8",
+      "seniority": "lead"
+    },
+    {
+      "name": "Paul Voge",
+      "title": "provocateur (sp?)",
+      "profileUrl": "https://www.linkedin.com/in/paulvoge",
+      "seniority": "mid"
+    },
+    {
+      "name": "Jacob Branch",
+      "title": "Growth at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/jacob1branch",
+      "seniority": "mid"
+    },
+    {
+      "name": "Matthew Straley",
+      "title": "Growth @ WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/matthewstraley",
+      "seniority": "mid"
+    },
+    {
+      "name": "Sarah Crosby",
+      "title": "Risk Advisor at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/sarahncrosby",
+      "seniority": "mid"
+    },
+    {
+      "name": "NANDA KUMAR",
+      "title": "Experienced Insurance Underwriting Professional | 10+ Years of Expertise in Risk Assessment, Policy Management, and Claims Processing.\"",
+      "profileUrl": "https://www.linkedin.com/in/nanda-kumar-029402107",
+      "seniority": "mid"
+    },
+    {
+      "name": "Oscar Henry",
+      "title": "Brokerage Operations",
+      "profileUrl": "https://www.linkedin.com/in/oscar-henry-328034185",
+      "seniority": "mid"
+    },
+    {
+      "name": "Shelby Grant, CRIS",
+      "title": "Lead Risk Advisor - Construction Vertical at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/shelby-grant",
+      "seniority": "lead"
+    },
+    {
+      "name": "William Hamory",
+      "title": "Director of Risk Management at With Coverage",
+      "profileUrl": "https://www.linkedin.com/in/william-hamory-80963373",
+      "seniority": "director"
+    },
+    {
+      "name": "James Campbell",
+      "title": "Lead Risk Advisor at With Coverage",
+      "profileUrl": "https://www.linkedin.com/in/james-campbell-3b99bb141",
+      "seniority": "lead"
+    },
+    {
+      "name": "Matthew Rogers",
+      "title": "Senior Manager - Claims Team at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/matthew-rogers-511a43a9",
+      "seniority": "senior"
+    },
+    {
+      "name": "Jake Jines",
+      "title": "Lead Risk Advisor at WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/jakejines",
+      "seniority": "lead"
+    },
+    {
+      "name": "Brad Herzlich",
+      "title": "WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/bradherzlich",
+      "seniority": "mid"
+    },
+    {
+      "name": "Dylan Bell",
+      "title": "Stealth",
+      "profileUrl": "https://www.linkedin.com/in/dylanbelll",
+      "seniority": "mid"
+    },
+    {
+      "name": "Phil Wilusz",
+      "title": "Head of Claims at WithCoverage, Providing a World Class Claims Experience",
+      "profileUrl": "https://www.linkedin.com/in/phil-wilusz-82a424b8",
+      "seniority": "manager"
+    },
+    {
+      "name": "Sage Disch",
+      "title": "WithCoverage",
+      "profileUrl": "https://www.linkedin.com/in/sagedisch",
+      "seniority": "mid"
+    },
+    {
+      "name": "Andrew Moger",
+      "title": "Founder @ BCD Strategic Investments // Vice Chairman @ RIPCO",
+      "profileUrl": "https://www.linkedin.com/in/andrewmoger",
+      "seniority": "mid"
+    },
+    {
+      "name": "Brandon M. Taylor, ARM",
+      "title": "Risk Management | Risk Advisory | Insurance",
+      "profileUrl": "https://www.linkedin.com/in/bmichaeltaylor17",
+      "seniority": "mid"
+    }
+  ],
+  "meta": {
+    "sourceUrl": "https://www.linkedin.com/company/withcoverage/",
+    "scrapedAt": "2026-04-02T18:58:18.669Z",
+    "totalCollected": 70
+  }
+}

@@ -63,31 +63,87 @@ export async function scrapeProfile(profileUrl) {
     }
     console.log("[profile] Session active. Navigating to profile…");
 
-    // Navigate to the profile — 'commit' + explicit h1 wait is far more reliable
-    // than waiting for the full DOM on a React-rendered page
-    await page.goto(profileUrl, { waitUntil: "commit", timeout: 60000 });
+    // Navigate to the profile — wait for load event
+    await page.goto(profileUrl, { waitUntil: "load", timeout: 60000 });
+    console.log("[profile] Page loaded, waiting for page to be interactive…");
 
-    await page
-      .waitForSelector("h1", { timeout: 15000 })
-      .catch(() =>
-        console.warn(
-          "[profile] h1 not visible within 15s — extracting whatever is available",
-        ),
-      );
+    // Wait for body and basic structure
+    await page.waitForSelector('body', { timeout: 10000 });
+    
+    // Additional delay for initial React hydration
+    await delay(3000, 4000);
+    
+    console.log("[profile] Page should be interactive now.");
+    
+    // Debug: Check what's actually on the page
+    const pageInfo = await page.evaluate(() => {
+      const h1s = document.querySelectorAll('h1');
+      const sections = document.querySelectorAll('section');
+      const mains = document.querySelectorAll('main');
+      const body = document.body;
+      
+      return {
+        url: window.location.href,
+        title: document.title,
+        bodyHeight: body.scrollHeight,
+        h1Count: h1s.length,
+        h1Texts: Array.from(h1s).map(h => h.textContent.trim().substring(0, 50)),
+        sectionCount: sections.length,
+        mainCount: mains.length,
+        hasProfileCard: !!document.querySelector('.pv-top-card'),
+        hasScaffold: !!document.querySelector('.scaffold-layout'),
+      };
+    });
+    console.log('[profile] Page state:', JSON.stringify(pageInfo, null, 2));
+    
+    // If no content loaded, wait longer and check again
+    if (pageInfo.h1Count === 0 && !pageInfo.hasProfileCard) {
+      console.log('[profile] ⚠️  No profile content detected. Waiting 10 more seconds...');
+      await delay(10000, 11000);
+      
+      const pageInfo2 = await page.evaluate(() => {
+        const h1s = document.querySelectorAll('h1');
+        return {
+          bodyHeight: document.body.scrollHeight,
+          h1Count: h1s.length,
+          h1Texts: Array.from(h1s).map(h => h.textContent.trim().substring(0, 50)),
+          hasProfileCard: !!document.querySelector('.pv-top-card'),
+        };
+      });
+      console.log('[profile] After waiting:', JSON.stringify(pageInfo2, null, 2));
+      
+      if (pageInfo2.h1Count === 0) {
+        console.log('\n═══════════════════════════════════════════════════════');
+        console.log('⚠️  PROFILE CONTENT NOT LOADING');
+        console.log('═══════════════════════════════════════════════════════');
+        console.log('LinkedIn may be blocking automation.');
+        console.log('Check the browser window - do you see the full profile?');
+        console.log('If yes, take a screenshot and inspect the HTML in DevTools.');
+        console.log('═══════════════════════════════════════════════════════\n');
+        
+        // Keep browser open for manual inspection
+        console.log('[profile] Keeping browser open for 30 seconds for manual inspection...');
+        await delay(30000, 30000);
+      }
+    }
 
     // ── 3. Scroll to trigger lazy-loaded sections ──────────────────────
     // LinkedIn only renders experience / education / skills / about when the
     // user scrolls to them. A single scroll-to-bottom misses sections that
     // load mid-page. We scroll incrementally with minimal pauses.
     await scrollProfile(page);
+    
+    // Wait after scrolling for lazy-loaded content to appear
+    console.log("[profile] Waiting for lazy-loaded sections...");
+    await delay(4000, 5000);
 
     // Wait for the experience section to be in the DOM before extracting.
     // This is the deepest section — if it's present, everything above it is too.
     // Use a broad selector since LinkedIn wraps anchors inside divs, not <section> tags.
     await page
       .waitForSelector(
-        '#experience, #experience-section, section[data-section="experience"], .artdeco-card h2',
-        { timeout: 10000 },
+        '#experience, #experience-section, section[data-section="experience"], .artdeco-card h2, section',
+        { timeout: 15000 },
       )
       .catch(() =>
         console.warn(
@@ -96,7 +152,18 @@ export async function scrapeProfile(profileUrl) {
       );
 
     // ── 4. DOM extraction (basic header data) ───────────────────
+    console.log("[profile] Extracting DOM data...");
+    
+    // Debug: Save HTML if in debug mode
+    if (process.env.DEBUG) {
+      const html = await page.content();
+      const fs = await import('fs');
+      fs.writeFileSync(`./data/debug-${username}.html`, html);
+      console.log(`[debug] HTML saved: ./data/debug-${username}.html`);
+    }
+    
     const domData = await extractFromDom(page);
+    console.log(`[profile] Extracted: name=${domData.name ? 'OK' : 'MISSING'}, headline=${domData.headline ? 'OK' : 'MISSING'}, location=${domData.location ? 'OK' : 'MISSING'}`);
 
     // ── 5. Scrape complete data from detail sub-pages ─────────────────────
     // LinkedIn truncates experience / education / skills on the main profile
@@ -158,17 +225,49 @@ async function extractFromDom(page) {
       return null;
     }
 
+    // Debug: Log what we find
+    const debug = {
+      h1Count: document.querySelectorAll("h1").length,
+      mainExists: !!document.querySelector("main"),
+      bodyText: document.body?.textContent?.substring(0, 200),
+    };
+    console.log("[DOM Debug]", debug);
+
     // ── Name ─────────────────────────────────────────────────────────────
     // LinkedIn always uses h1 for the name — class changes, tag doesn't
-    const name =
-      document.querySelector("h1")?.textContent?.replace(/\s+/g, " ").trim() ||
-      null;
+    // Try multiple approaches to find the name
+    let name = null;
+    
+    // Approach 1: Standard h1
+    const h1Elements = document.querySelectorAll("h1");
+    for (const h1 of h1Elements) {
+      const text = h1.textContent?.replace(/\s+/g, " ").trim();
+      if (text && text.length > 2 && text.length < 100) {
+        name = text;
+        break;
+      }
+    }
+    
+    // Approach 2: Look in specific containers
+    if (!name) {
+      name = first(
+        "main h1",
+        ".scaffold-layout__main h1", 
+        ".pv-top-card h1",
+        '[data-section="topcard"] h1',
+        ".pv-text-details__left-panel h1"
+      );
+    }
 
     // ── Headline ─────────────────────────────────────────────────────────
     const headline = first(
       ".text-body-medium.break-words",
       ".pv-text-details__left-panel .text-body-medium",
       ".ph5 .mt2 .text-body-medium",
+      "main .text-body-medium",
+      ".pv-top-card .text-body-medium",
+      '[class*="headline"]',
+      ".pv-top-card__tagline"
     );
 
     // ── Location ─────────────────────────────────────────────────────────
@@ -176,6 +275,9 @@ async function extractFromDom(page) {
       ".text-body-small.inline.t-black--light.break-words",
       ".pv-text-details__left-panel span.t-black--light",
       ".ph5 span.t-black--light",
+      "main .text-body-small.t-black--light",
+      ".pv-top-card .text-body-small",
+      '[class*="location"]'
     );
 
     // ── Connections ───────────────────────────────────────────────────────
@@ -202,6 +304,7 @@ async function extractFromDom(page) {
         '[class*="artdeco-card"], [class*="pv-profile-card"]',
       ) ||
       document.querySelector('section[data-section="summary"]') ||
+      document.querySelector('[id*="about"]')?.closest("section, div") ||
       // heading text fallback
       Array.from(document.querySelectorAll("h2"))
         .find((h) => h.textContent?.trim().toLowerCase() === "about")
@@ -213,6 +316,10 @@ async function extractFromDom(page) {
           .find((t) => t && t.length > 30) ||
         aboutSection
           .querySelector(".pv-about__summary-text, .pv-about-section p")
+          ?.textContent?.replace(/\s+/g, " ")
+          .trim() ||
+        aboutSection
+          .querySelector("div.inline-show-more-text")
           ?.textContent?.replace(/\s+/g, " ")
           .trim() ||
         null
@@ -255,17 +362,17 @@ async function scrapeDetailPages(page, baseProfileUrl) {
     try {
       await page.goto(url, { waitUntil: "commit", timeout: 30_000 });
 
-      // Wait for at least one list item
+      // Wait for at least one list item - use broader selectors
       await page
-        .waitForSelector("li.artdeco-list__item, ul.pvs-list > li, main li", {
-          timeout: 8_000,
+        .waitForSelector("li.artdeco-list__item, ul.pvs-list > li, main li, ul li", {
+          timeout: 10_000,
         })
         .catch(() =>
           console.warn(`[profile] No list items found on ${key} detail page`),
         );
 
-      // Detail pages load all content immediately, no scrolling needed
-      await delay(200, 400);
+      // Detail pages load all content immediately, but give React some time
+      await delay(800, 1200);
 
       result[key] = await page.evaluate((sectionType) => {
         // ── Shared helpers (self-contained for evaluate isolation) ─────────
@@ -522,10 +629,11 @@ async function scrapeDetailPages(page, baseProfileUrl) {
 async function scrollProfile(page) {
   // Re-evaluate the page height on every step because LinkedIn lazy-loads
   // content as you scroll — the page grows taller with each new section.
-  // Optimized: faster scrolling with reduced delays
+  console.log('[profile] Starting scroll sequence...');
+  
   const stepPx = 600;
-  const stepMs = 180; // Reduced from 550ms - much faster
-  const maxSteps = 25; // Reduced from 50 - sufficient for most profiles
+  const stepMs = 500;
+  const maxSteps = 25;
 
   for (let i = 0; i < maxSteps; i++) {
     const { scrollY, totalHeight } = await page.evaluate(() => ({
@@ -534,18 +642,28 @@ async function scrollProfile(page) {
     }));
 
     // Reached the bottom
-    if (scrollY + stepPx >= totalHeight) break;
+    if (scrollY + stepPx >= totalHeight) {
+      console.log(`[profile] Reached bottom at step ${i + 1}, scrollY=${scrollY}, totalHeight=${totalHeight}`);
+      break;
+    }
 
-    await page.evaluate(
-      (y) => window.scrollTo({ top: y, behavior: "smooth" }),
-      scrollY + stepPx,
-    );
+    // Scroll down - use simple scrollBy for reliability
+    await page.evaluate((step) => {
+      window.scrollBy(0, step);
+    }, stepPx);
+    
+    if (i % 5 === 0) {
+      console.log(`[profile] Scroll step ${i + 1}/${maxSteps}, position: ${scrollY}px`);
+    }
+    
     await new Promise((r) => setTimeout(r, stepMs));
   }
 
+  console.log('[profile] Scrolling back to top...');
   // Scroll back to top so "about" / connections near the top card are rendered
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await new Promise((r) => setTimeout(r, 300)); // Reduced from 800ms
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await new Promise((r) => setTimeout(r, 1000));
+  console.log('[profile] Scroll sequence complete.');
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
